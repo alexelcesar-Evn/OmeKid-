@@ -33,6 +33,7 @@ const colors = {
 };
 
 const STORAGE_KEY = 'omekid-vandam-en-v1';
+const LANGUAGE_KEY = 'omekid-language';
 const WEEKLY_TARGET = 10;
 const DEFAULT_GOAL_LIMIT = 3;
 const GOAL_LIMIT_OPTIONS = [3, 5, 7];
@@ -42,6 +43,251 @@ const LANDING_GANG_IMAGE = '/omekid-landing-futuristic.png';
 const APP_PAGE_BACKGROUND = 'linear-gradient(90deg, #FFFFFF 0%, #FFFCF7 38%, #EDF5FF 64%, #D5E7FF 100%)';
 const BLUE_GLASS_BACKGROUND = 'linear-gradient(145deg, rgba(84,190,255,0.96) 0%, rgba(18,111,225,0.98) 48%, rgba(5,48,137,1) 100%)';
 const BLUE_GLASS_SHADOW = '0 14px 28px rgba(20,104,225,0.34), 0 4px 0 rgba(4,43,126,0.68), inset 0 2px 0 rgba(255,255,255,0.64), inset 0 -7px 16px rgba(3,43,125,0.3)';
+
+const englishCopy = {
+  'Pequeños pasos.': 'Small steps.',
+  'Grandes logros.': 'Big wins.',
+  'Ayudando a niños y familias a construir un futuro con amor, paciencia y victorias diarias.': 'Helping children and families build a future with love, patience, and daily wins.',
+  'Entrar a OmeKid': 'Enter OmeKid',
+  'Inicio': 'Home',
+  'Ayuda': 'Help',
+  'Premios': 'Rewards',
+  'Semana': 'Week',
+  'Ajustes': 'Settings',
+  'OmeKid · Hábitos positivos para niños y familias': 'OmeKid · Positive habits for children and families',
+  'Buenos días': 'Good morning',
+  '¿Cómo estuvo tu día?': 'How was your day?',
+  '¡Hola,': 'Hi,',
+  'huellita': 'paw print',
+  'huellitas': 'paw prints',
+  'esta semana': 'this week',
+  'Deberes de hoy (': "Today's duties (",
+  'de': 'of',
+  'Tu viaje de crecimiento': 'Your growth journey',
+  'Deberes de hoy': "Today's duties",
+  'Toca un deber para seleccionarlo': 'Tap a duty to select it',
+  'Ganó una huellita': 'Earned a Paw Print',
+  '¡Huellita ganada!': 'Paw print earned!',
+  '¿Te equivocaste?': 'Made a mistake?',
+  'Quitar 1 huellita': 'Remove 1 paw print',
+  'Huella guardada. Celebramos lo que sí pasó.': 'Paw print saved. We celebrate what happened.',
+  '1 huellita quitada por error.': '1 paw print removed.',
+  'Premio de la semana': "This week's reward",
+  'Las huellitas se quedan': 'Paw prints stay',
+  '¿Aún no lo logra? Elegir ayuda extra': 'Still working on it? Choose extra help',
+  'Ayuda para este momento 💛': 'Help for this moment 💛',
+  'Elige una ayuda para acompañar este momento.': 'Choose a way to support this moment.',
+  '¿Qué necesita ahora?': 'What would help right now?',
+  'Ayuda extra': 'Extra help',
+  'Un poco de compañía puede ayudar': 'A little support can help',
+  'Un momento de calma': 'A calm moment',
+  'Primero tranquilidad, después seguimos': 'Calm first, then we continue',
+  'Arreglar algo': 'Make it better',
+  'Resolver lo ocurrido con cariño': 'Work through what happened with care',
+  '¿Tú necesitas una pausa?': 'Do you need a pause?',
+  'Abrir Apoyo al Adulto': 'Open Adult Support',
+  '¿Cómo puedes ayudar?': 'How can you help?',
+  'Podemos reconectar': 'We can reconnect',
+  'Ayudar con el primer paso pequeño': 'Help with the first small step',
+  'Ofrecer dos opciones simples': 'Offer two simple choices',
+  'Hacerlo juntos una vez': 'Do it together once',
+  'Celebrar que lo intentó con ayuda': 'Celebrate trying with help',
+  'Tomar una pausa juntos': 'Take a pause together',
+  'Usar pocas palabras por un momento': 'Use fewer words for a moment',
+  'Ir a un lugar tranquilo': 'Go to a quiet place',
+  'Intentar una versión más sencilla del deber': 'Try an easier version of the duty',
+  'Ayudar a arreglarlo': 'Help make it better',
+  'Intentarlo otra vez con calma': 'Try again calmly',
+  'Usar palabras amables': 'Use kind words',
+  'Preguntar: “¿Qué podemos hacer para mejorarlo?”': 'Ask: “What can we do to make it better?”',
+  'Pausa para el adulto': 'Pause for the adult',
+  'Calmarte primero no significa rendirte. Te ayuda a responder con intención.': 'Calming yourself first does not mean giving in. It helps you respond with intention.',
+  'Tomarte un momento': 'Take a moment',
+  'Tómate un momento': 'Take a moment',
+  'Elige lo que te ayude en este momento.': 'Choose what may help you right now.',
+  'Inhala...': 'Breathe in...',
+  'Exhala...': 'Breathe out...',
+  'Detener cuando quieras': 'Stop whenever you want',
+  'Mostrar otra idea': 'Show another idea',
+  'Primero, asegurar el momento': 'First, make the moment safe',
+  'Hacer una pausa de 10 segundos': 'Take a 10-second pause',
+  'Respirar lentamente 3 veces': 'Breathe slowly 3 times',
+  'No entrar en la discusión': 'Do not enter the argument',
+  'Tomar distancia si es seguro': 'Step away if it is safe',
+  'Mostrar otras ideas': 'Show other ideas',
+  'Estoy listo para volver': "I'm ready to go back",
+  'Pequeñas pausas pueden generar grandes cambios.': 'Small pauses can create big changes.',
+  'Confirma que todos estén seguros. Si hace falta, separa con calma y retira objetos que puedan lastimar.': 'Make sure everyone is safe. If needed, calmly create space and move anything that could hurt someone.',
+  'No tienes que responder inmediatamente. Regálate diez segundos antes de decidir qué decir.': 'You do not have to respond immediately. Give yourself ten seconds before deciding what to say.',
+  'Sigue una respiración guiada breve para bajar la intensidad del momento.': 'Follow a short guided breath to lower the intensity of the moment.',
+  'Si tu hija responde molesta, intenta no responder al tono. Baja tu voz y di: “No voy a discutir. Hablamos cuando estemos tranquilas.” Pueden resolver lo ocurrido después.': 'If your child responds angrily, try not to respond to the tone. Lower your voice and say: “I will not argue. We can talk when we are calm.” You can work through it later.',
+  'Puedes decir: “Necesito un momento. Regreso pronto.”': 'You can say: “I need a moment. I will be back soon.”',
+  'Prueba: “¿Quieres recoger primero los juguetes o los libros?”': 'Try: “Would you like to pick up the toys or the books first?”',
+  'Repetir la indicación una sola vez': 'Repeat the direction only once',
+  'Dila con pocas palabras y después dale un momento para responder.': 'Say it with few words, then give your child a moment to respond.',
+  'Hablar del tema más tarde': 'Talk about it later',
+  'Puedes decir: “Esto importa, pero lo hablaremos cuando estemos más tranquilos.”': 'You can say: “This matters, but we will talk about it when we are calmer.”',
+  'Pedir apoyo a otro adulto': 'Ask another adult for support',
+  'Si hay alguien disponible, pedir relevo también es cuidar a la familia.': 'If someone is available, asking for a hand is also caring for the family.',
+  'Hacer la petición más pequeña': 'Make the request smaller',
+  'En lugar de pedir todo, comienza con un solo paso fácil de entender.': 'Instead of asking for everything, begin with one easy-to-understand step.',
+  'No necesito ganar esta discusión': 'I do not need to win this argument',
+  'La prioridad ahora puede ser bajar la intensidad. El límite puede explicarse después.': 'The priority can be lowering the intensity. The limit can be explained later.',
+  'Cambiar brevemente de ambiente': 'Briefly change the setting',
+  'Si todos están seguros, tomar agua o caminar unos pasos puede ayudar a reiniciar.': 'If everyone is safe, drinking water or walking a few steps may help reset.',
+  'Nombrar lo que escuchaste': 'Name what you heard',
+  'Prueba: “Veo que esto te molestó.” Escuchar no significa cambiar el límite.': 'Try: “I see that this upset you.” Listening does not mean changing the limit.',
+  'Listo. Ahora puedes elegir cómo responder.': 'Ready. Now you can choose how to respond.',
+  'Volver': 'Back',
+  '← Volver': '← Back',
+  'Premios 🎁': 'Rewards 🎁',
+  'Familiares, simples y significativos': 'Simple, meaningful family rewards',
+  'Premio personalizado': 'Custom reward',
+  '➕ Premio personalizado': '➕ Custom reward',
+  'Guardar premio': 'Save reward',
+  'Elegido': 'Selected',
+  'Elegir': 'Choose',
+  'Resumen semanal': 'Weekly summary',
+  'Celebración de la semana': "This week's celebration",
+  'Premio ganado': 'Reward earned',
+  'Victoria familiar': 'Family win',
+  'El progreso está creciendo': 'Progress is growing',
+  'Premio': 'Reward',
+  'Mayor logro': 'Biggest win',
+  'Deber favorito': 'Favorite duty',
+  'Logro familiar': 'Family win',
+  'Seguimos avanzando juntos': 'We keep moving forward together',
+  'El plan familiar está listo para la primera huellita.': 'The family plan is ready for the first paw print.',
+  'Esta semana funcionó bien reforzar “': 'Celebrating “',
+  '”. La próxima semana puedes mantener solo 2 deberes si quieres hacerlo más fácil.': '” worked well this week. Next week, you can keep only 2 duties to make things easier.',
+  'Logros de la semana': "This week's wins",
+  'Huellitas ganadas': 'Paw prints earned',
+  'Deber más reforzado': 'Most celebrated duty',
+  'Observaciones de la semana': 'Weekly notes',
+  'Sirven para descubrir patrones: qué días cuestan más, qué ayudó y qué necesita más apoyo.': 'Use notes to notice patterns: harder days, what helped, and where more support may help.',
+  'Ejemplos: “Se durmió tarde”, “Le ayudó tener dos opciones”, “Había mucho ruido”.': 'Examples: “Went to bed late,” “Two choices helped,” “It was very noisy.”',
+  'Guardar observación': 'Save note',
+  'Escribe una observación corta...': 'Write a short note...',
+  'Todavía no hay observaciones esta semana.': 'No notes yet this week.',
+  '💡 Recomendación': '💡 Recommendation',
+  'Plan familiar de esta semana': "This week's family plan",
+  'Idioma': 'Language',
+  'Elige el idioma de OmeKid.': 'Choose the OmeKid language.',
+  'Editar perfil del niño': "Edit child's profile",
+  'Si necesitas cambiar el nombre, la edad o el avatar, hazlo aquí.': 'Change the name, age, or avatar here.',
+  'Nombre': 'Name',
+  'Edad': 'Age',
+  'Avatar de OmeKid': 'OmeKid avatar',
+  'Guardar perfil': 'Save profile',
+  'Premio seleccionado': 'Selected reward',
+  'Cambiar premio': 'Change reward',
+  'Premios personalizados guardados': 'Saved custom rewards',
+  'Seleccionado': 'Selected',
+  'Quitar': 'Remove',
+  'Deberes activos': 'Active duties',
+  'Deberes activos · máximo': 'Active duties · maximum',
+  'deberes': 'duties',
+  'años': 'years old',
+  'Guardar': 'Save',
+  'Recomendamos empezar con 3. La familia puede crecer a 5 o 7 cuando la rutina ya se sienta fácil.': 'We recommend starting with 3. Families can grow to 5 or 7 when the routine feels easy.',
+  'Límite de deberes semanales': 'Weekly duty limit',
+  'Elige cuántos deberes pueden estar activos esta semana. Manténlo simple cuando la semana esté pesada.': 'Choose how many duties can be active this week. Keep it simple during harder weeks.',
+  'Deber personalizado': 'Custom duty',
+  'Agrega un deber concreto para esta familia. Si hay espacio, se activa automáticamente.': 'Add a specific duty for your family. If there is room, it activates automatically.',
+  'Guardar deber': 'Save duty',
+  'Rutina de la mañana': 'Morning routine',
+  'Bañarse sin pelear': 'Take a bath calmly',
+  'Recoger juguetes': 'Pick up toys',
+  'Usar voz tranquila': 'Use a calm voice',
+  'Hacer tarea': 'Do homework',
+  'Cepillarse dientes': 'Brush teeth',
+  'Prepararse para la escuela': 'Get ready for school',
+  'Ayudar en casa': 'Help at home',
+  'Escoger película': 'Choose a movie',
+  'Una noche de película en familia': 'A family movie night',
+  'Ir al parque': 'Go to the park',
+  'Tiempo juntos al aire libre': 'Time together outdoors',
+  'Tiempo extra de videojuego': 'Extra video game time',
+  'Un poquito extra el sábado': 'A little extra on Saturday',
+  'Elegir comida del viernes': 'Choose Friday dinner',
+  'Algo especial en familia': 'Something special together',
+  'Una ida al parque de diversiones': 'Go to an amusement park',
+  'Una aventura especial en familia': 'A special family adventure',
+  'Un peluche': 'A stuffed animal',
+  'Elegir un nuevo amigo especial': 'Choose a special new friend',
+  'Ir al cine': 'Go to the movies',
+  'Disfrutar una película juntos': 'Enjoy a movie together',
+  'El líder tranquilo': 'The calm leader',
+  'La pensadora': 'The thinker',
+  'El protector': 'The protector',
+  'El valiente': 'The brave one',
+  'El explorador': 'The explorer',
+  'El relajado': 'The relaxed one',
+  'La creativa': 'The creative one',
+  'El más energético': 'The energetic one',
+  'Ir a la portada de OmeKid': 'Go to the OmeKid home page',
+  'OmeKid · Cada elección cuenta': 'OmeKid · Every choice counts',
+  'Observación guardada para la semana.': 'Note saved for the week.'
+};
+
+function getLanguage() {
+  return localStorage.getItem(LANGUAGE_KEY) === 'en' ? 'en' : 'es';
+}
+
+function languageText(spanish, english) {
+  return getLanguage() === 'en' ? english : spanish;
+}
+
+function translateToEnglish(value) {
+  const text = String(value || '');
+  if (englishCopy[text]) return englishCopy[text];
+
+  return text
+    .replace(/^¡Hola, (.+)!$/, 'Hi, $1!')
+    .replace(/^Deberes de hoy \((\d+) de (\d+)\)$/, "Today's duties ($1 of $2)")
+    .replace(/^(.+) sigue avanzando\.$/, (_, label) => `${translateToEnglish(label)} keeps moving forward.`)
+    .replace(/^(\d+) \/ 10 huellitas$/, '$1 / 10 paw prints')
+    .replace(/^(\d+) de 10 huellitas$/, '$1 of 10 paw prints')
+    .replace(/^(\d+) huellitas ganadas$/, '$1 paw prints earned')
+    .replace(/^(\d+) huellitas hacia (.+)$/, (_, count, reward) => `${count} paw prints toward ${translateToEnglish(reward)}`)
+    .replace(/^(\d+) esta semana$/, '$1 this week')
+    .replace(/^(\d+) huellita esta semana$/, '$1 paw print this week')
+    .replace(/^(\d+) huellitas esta semana$/, '$1 paw prints this week')
+    .replace(/^Faltan (\d+) huellitas$/, '$1 paw prints to go')
+    .replace(/^(\d+) deberes$/, '$1 duties')
+    .replace(/^Deberes activos · máximo (\d+)$/, 'Active duties · maximum $1')
+    .replace(/^Ciclo (\d+) de 3$/, 'Cycle $1 of 3')
+    .replace(/^Pausa un momento\.\.\. (\d+)$/, 'Pause for a moment... $1')
+    .replace(/^Esta semana funcionó bien reforzar “(.+)”\. La próxima semana puedes mantener solo 2 deberes si quieres hacerlo más fácil\.$/, (_, duty) => `Celebrating “${translateToEnglish(duty)}” worked well this week. Next week, you can keep only 2 duties to make things easier.`)
+    .replace(/^(.+) años$/, '$1 years old')
+    .replace(/^Quitar (.+)$/, 'Remove $1');
+}
+
+function translatePageToEnglish(root = document.body) {
+  if (!root) return;
+  const translateElement = (element) => {
+    if (!(element instanceof Element)) return;
+    ['placeholder', 'aria-label', 'title'].forEach((attribute) => {
+      const value = element.getAttribute(attribute);
+      if (value) {
+        const translated = translateToEnglish(value);
+        if (translated !== value) element.setAttribute(attribute, translated);
+      }
+    });
+  };
+  translateElement(root);
+  root.querySelectorAll?.('*').forEach(translateElement);
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  let node = walker.nextNode();
+  while (node) {
+    const trimmed = node.nodeValue.trim();
+    if (trimmed) {
+      const translated = translateToEnglish(trimmed);
+      if (translated !== trimmed) node.nodeValue = node.nodeValue.replace(trimmed, translated);
+    }
+    node = walker.nextNode();
+  }
+}
 
 const goalOptions = [
   { id: 'morning-routine', emoji: '☀️', label: 'Rutina de la mañana', color: colors.sunYellow, bg: colors.sunLight },
@@ -59,13 +305,15 @@ const rewardOptions = [
   { id: 'park', emoji: '🌳', label: 'Ir al parque', desc: 'Tiempo juntos al aire libre' },
   { id: 'game-time', emoji: '🎮', label: 'Tiempo extra de videojuego', desc: 'Un poquito extra el sábado' },
   { id: 'friday-food', emoji: '🍕', label: 'Elegir comida del viernes', desc: 'Algo especial en familia' },
-  { id: 'campout', emoji: '⛺', label: 'Noche de campamento', desc: 'Cobijas, cuentos y palomitas' }
+  { id: 'amusement-park', emoji: '🎢', label: 'Una ida al parque de diversiones', desc: 'Una aventura especial en familia' },
+  { id: 'plush-toy', emoji: '🧸', label: 'Un peluche', desc: 'Elegir un nuevo amigo especial' },
+  { id: 'cinema', emoji: '🍿', label: 'Ir al cine', desc: 'Disfrutar una película juntos' }
 ];
 
 const supportOptions = [
-  { id: 'help', emoji: '❤️', label: 'Necesitó ayuda', desc: 'Quiso hacerlo, pero necesitó compañía', color: colors.sky },
-  { id: 'calm', emoji: '☁️', label: 'Necesitó calma', desc: 'Primero tranquilidad, después seguimos', color: colors.lavender },
-  { id: 'repair', emoji: '🧩', label: 'Necesitó arreglar algo', desc: 'Resolver lo ocurrido con cariño', color: colors.mintDark }
+  { id: 'help', emoji: '❤️', label: 'Ayuda extra', desc: 'Un poco de compañía puede ayudar', color: colors.sky },
+  { id: 'calm', emoji: '☁️', label: 'Un momento de calma', desc: 'Primero tranquilidad, después seguimos', color: colors.lavender },
+  { id: 'repair', emoji: '🧩', label: 'Arreglar algo', desc: 'Resolver lo ocurrido con cariño', color: colors.mintDark }
 ];
 
 const supportActionOptions = {
@@ -79,7 +327,7 @@ const supportActionOptions = {
     { id: 'pause-together', emoji: '🌬️', label: 'Tomar una pausa juntos' },
     { id: 'few-words', emoji: '🤫', label: 'Usar pocas palabras por un momento' },
     { id: 'quiet-place', emoji: '☁️', label: 'Ir a un lugar tranquilo' },
-    { id: 'smaller-goal', emoji: '🌿', label: 'Intentar una versión más pequeña de la meta' }
+    { id: 'smaller-goal', emoji: '🌿', label: 'Intentar una versión más sencilla del deber' }
   ],
   repair: [
     { id: 'fix-it', emoji: '🧺', label: 'Ayudar a arreglarlo' },
@@ -151,7 +399,7 @@ const adultCalmIdeas = [
   {
     emoji: '💛',
     title: 'No necesito ganar esta discusión',
-    text: 'Tu meta ahora puede ser bajar la intensidad. El límite puede explicarse después.'
+    text: 'La prioridad ahora puede ser bajar la intensidad. El límite puede explicarse después.'
   },
   {
     emoji: '🥤',
@@ -166,7 +414,7 @@ const adultCalmIdeas = [
 ];
 
 const supportStepCopy = {
-  help: 'Elige una forma de hacer la meta más fácil. Si tu hijo lo intenta con ayuda, puedes celebrar ese esfuerzo.',
+  help: 'Elige una forma de hacer el deber más fácil. Si tu hijo lo intenta con ayuda, puedes celebrar ese esfuerzo.',
   calm: 'Elige primero un paso para recuperar la calma. Después pueden decidir si continúan o lo intentan más tarde.',
   repair: 'Elige una forma sencilla de arreglar lo ocurrido y volver a conectar.'
 };
@@ -192,7 +440,6 @@ const defaultData = {
   customGoals: [],
   customRewards: [],
   stamps: [],
-  supportLogs: [],
   notes: [],
   weekStartDate: getWeekStartKey(new Date())
 };
@@ -268,13 +515,22 @@ const styles = {
 
 function App() {
   const [data, setData] = useStoredData();
+  const [language, setLanguage] = useState(getLanguage);
   const [screen, setScreenState] = useState(() => getScreenFromHash() || 'landing');
   const [registerIntent, setRegisterIntent] = useState('');
   const [celebration, setCelebration] = useState('');
   const registerStampLocks = useRef(new Set());
 
   const weekStamps = useMemo(() => currentWeekItems(data.stamps), [data.stamps]);
-  const weekSupport = useMemo(() => currentWeekItems(data.supportLogs), [data.supportLogs]);
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+    if (language !== 'en') return undefined;
+    translatePageToEnglish();
+    const observer = new MutationObserver(() => translatePageToEnglish());
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+    return () => observer.disconnect();
+  }, [language, screen, celebration]);
 
   useEffect(() => {
     const initialScreen = getScreenFromHash();
@@ -310,7 +566,7 @@ function App() {
   }
 
   function showCelebration(message, duration = 1800) {
-    setCelebration(message);
+    setCelebration(language === 'en' ? translateToEnglish(message) : message);
     window.setTimeout(() => setCelebration(''), duration);
   }
 
@@ -331,17 +587,6 @@ function App() {
     return true;
   }
 
-  function addSupport(log) {
-    setData((currentData) => ({
-      ...currentData,
-      supportLogs: [
-        { id: crypto.randomUUID(), createdAt: new Date().toISOString(), ...log },
-        ...(Array.isArray(currentData.supportLogs) ? currentData.supportLogs : [])
-      ]
-    }));
-    showCelebration('Momento guardado. Las huellitas se quedan intactas.', 2800);
-  }
-
   function addNote(text) {
     const cleanText = text.trim();
     if (!cleanText) return;
@@ -354,7 +599,9 @@ function App() {
 
   function undoRecentStamps() {
     if (!data.stamps.length) return;
-    const confirmed = window.confirm('¿Quitar 1 huellita reciente? Usa esto solo si se agregó por error.');
+    const confirmed = window.confirm(language === 'en'
+      ? 'Remove 1 recent paw print? Use this only if it was added by mistake.'
+      : '¿Quitar 1 huellita reciente? Usa esto solo si se agregó por error.');
     if (!confirmed) return;
     updateData({ ...data, stamps: data.stamps.slice(1) });
     showCelebration('1 huellita quitada por error.');
@@ -421,12 +668,17 @@ function App() {
     updateData({ ...data, ...profile });
   }
 
+  function updateLanguage(nextLanguage) {
+    const cleanLanguage = nextLanguage === 'en' ? 'en' : 'es';
+    localStorage.setItem(LANGUAGE_KEY, cleanLanguage);
+    setLanguage(cleanLanguage);
+    window.location.reload();
+  }
+
   const screenProps = {
     data,
     weekStamps,
-    weekSupport,
     addStamp,
-    addSupport,
     addNote,
     updateGoals,
     addCustomGoal,
@@ -435,13 +687,15 @@ function App() {
     updateReward,
     deleteCustomReward,
     updateProfile,
+    language,
+    updateLanguage,
     undoRecentStamps,
     setScreen,
     registerIntent
   };
 
   if (screen === 'landing') {
-    return <LandingScreen onStart={() => setScreen('home')} />;
+    return <LandingScreen onStart={() => setScreen('home')} language={language} updateLanguage={updateLanguage} />;
   }
 
   const Screen = {
@@ -468,7 +722,6 @@ function App() {
       padding: 20,
       fontFamily: "'Nunito', 'Quicksand', -apple-system, sans-serif"
     }}>
-      <BlueLogoFilter />
       <div style={styles.phoneFrame}>
         <StatusBar onLogoClick={() => setScreen('landing')} />
         <div key={screen} style={styles.scrollContent}>
@@ -484,37 +737,7 @@ function App() {
   );
 }
 
-function BlueLogoFilter() {
-  return (
-    <svg aria-hidden="true" width="0" height="0" style={{ position: 'absolute' }}>
-      <defs>
-        <filter id="omekid-blue-logo-filter" colorInterpolationFilters="sRGB">
-          <feColorMatrix
-            in="SourceGraphic"
-            type="hueRotate"
-            values="150"
-            result="blueVersion"
-          />
-          <feColorMatrix
-            in="SourceGraphic"
-            type="matrix"
-            values="
-              0 0 0 0 0
-              0 0 0 0 0
-              0 0 0 0 0
-              1.4 1 -2.4 0 -0.38
-            "
-            result="yellowMask"
-          />
-          <feComposite in="blueVersion" in2="yellowMask" operator="in" result="blueDetails" />
-          <feComposite in="blueDetails" in2="SourceGraphic" operator="over" />
-        </filter>
-      </defs>
-    </svg>
-  );
-}
-
-function LandingScreen({ onStart }) {
+function LandingScreen({ onStart, language, updateLanguage }) {
   return (
     <main style={{
       minHeight: '100vh',
@@ -530,7 +753,14 @@ function LandingScreen({ onStart }) {
       color: colors.text,
       position: 'relative'
     }}>
-      <BlueLogoFilter />
+      <div style={{
+        position: 'absolute',
+        top: 'clamp(16px, 3vh, 28px)',
+        right: 'clamp(12px, 3vw, 34px)',
+        zIndex: 3
+      }}>
+        <LanguagePills language={language} updateLanguage={updateLanguage} />
+      </div>
       <section style={{
         width: 'min(100%, 460px)',
         textAlign: 'left'
@@ -548,7 +778,7 @@ function LandingScreen({ onStart }) {
             margin: 0,
             mixBlendMode: 'darken',
             clipPath: 'polygon(7% 19%, 31% 19%, 35% 13%, 66% 13%, 70% 6%, 83% 6%, 87% 14%, 94% 14%, 97% 25%, 97% 71%, 93% 78%, 90% 89%, 15% 89%, 12% 80%, 8% 76%)',
-            filter: 'url(#omekid-blue-logo-filter) drop-shadow(0 12px 24px rgba(7,24,59,0.18))'
+            filter: 'drop-shadow(0 12px 24px rgba(7,24,59,0.18))'
           }}
         />
         <p className="landing-tagline" style={{
@@ -592,7 +822,7 @@ function LandingScreen({ onStart }) {
   );
 }
 
-function HomeScreen({ data, weekStamps, addStamp, setScreen }) {
+function HomeScreen({ data, weekStamps, addStamp, undoRecentStamps, setScreen }) {
   const progress = Math.min(100, (weekStamps.length / WEEKLY_TARGET) * 100);
   const [selectedGoalId, setSelectedGoalId] = useState(data.activeGoals[0]?.id || goalOptions[0].id);
   const [stampFeedback, setStampFeedback] = useState(false);
@@ -632,7 +862,9 @@ function HomeScreen({ data, weekStamps, addStamp, setScreen }) {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
           <div>
             <div style={{ fontSize: 13, fontWeight: 800, color: 'rgba(255,255,255,0.72)' }}>¿Cómo estuvo tu día?</div>
-            <div style={{ fontSize: 25, fontWeight: 950, color: '#fff', lineHeight: 1.2 }}>¡Hola, {data.childName}! 👋</div>
+            <div style={{ fontSize: 25, fontWeight: 950, color: '#fff', lineHeight: 1.2 }}>
+              {languageText(`¡Hola, ${data.childName}! 👋`, `Hi, ${data.childName}! 👋`)}
+            </div>
           </div>
           <Avatar emoji={data.avatar} />
         </div>
@@ -658,7 +890,7 @@ function HomeScreen({ data, weekStamps, addStamp, setScreen }) {
           <div>
             <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.8)', fontWeight: 900 }}>Tu viaje de crecimiento</div>
             <div style={{ fontSize: 28, color: '#fff', fontWeight: 950, lineHeight: 1.05, marginTop: 4 }}>
-              {weekStamps.length} / 10 huellitas
+              {languageText(`${weekStamps.length} / 10 huellitas`, `${weekStamps.length} / 10 paw prints`)}
             </div>
           </div>
           <div style={{ padding: '8px 4px 2px' }}>
@@ -667,7 +899,10 @@ function HomeScreen({ data, weekStamps, addStamp, setScreen }) {
         </div>
       </div>
 
-      <div style={sectionLabel}>Metas de hoy ({data.activeGoals.length} de {data.goalLimit})</div>
+      <div style={sectionLabel}>{languageText(
+        `Deberes de hoy (${data.activeGoals.length} de ${data.goalLimit})`,
+        `Today's duties (${data.activeGoals.length} of ${data.goalLimit})`
+      )}</div>
       {data.activeGoals.map((goal) => (
         <GoalCard
           key={goal.id}
@@ -685,7 +920,7 @@ function HomeScreen({ data, weekStamps, addStamp, setScreen }) {
         textAlign: 'center',
         margin: '2px 0 12px'
       }}>
-        Toca una meta para seleccionarla
+        Toca un deber para seleccionarlo
       </div>
 
       <button
@@ -699,21 +934,33 @@ function HomeScreen({ data, weekStamps, addStamp, setScreen }) {
         <span>{stampFeedback ? '¡Huellita ganada!' : 'Ganó una huellita'}</span>
         <span style={{ fontSize: 26 }}>{stampFeedback ? '✨' : '🐾'}</span>
       </button>
-      <div style={{ textAlign: 'center', color: colors.mintDark, fontSize: 12, fontWeight: 900, margin: '10px 0 4px' }}>
-        {stampFeedback ? `${selectedGoal.label} sigue avanzando.` : 'Así sucede el progreso.'}
-      </div>
-      <button type="button" onClick={() => setScreen('settings')} style={{
-        width: '100%',
-        border: 'none',
-        background: 'transparent',
-        color: colors.textMuted,
-        fontSize: 12,
-        fontWeight: 900,
-        padding: '6px 0 2px',
-        cursor: 'pointer'
+      <div style={{
+        textAlign: 'center',
+        margin: '10px 0 2px'
       }}>
-        ¿Te equivocaste? Corregir huellitas en Ajustes
-      </button>
+        <div style={{ color: colors.textMuted, fontSize: 11, fontWeight: 900, marginBottom: 6 }}>
+          ¿Te equivocaste?
+        </div>
+        <button type="button" onClick={undoRecentStamps} disabled={data.stamps.length < 1} style={{
+          minHeight: 38,
+          border: `1.5px solid ${data.stamps.length < 1 ? '#E1E6ED' : colors.lavender + '80'}`,
+          borderRadius: 14,
+          background: data.stamps.length < 1 ? '#F1F3F6' : 'rgba(255,255,255,0.82)',
+          color: data.stamps.length < 1 ? colors.textSoft : '#7452A8',
+          fontSize: 12,
+          fontWeight: 950,
+          padding: '7px 16px',
+          cursor: data.stamps.length < 1 ? 'default' : 'pointer',
+          boxShadow: data.stamps.length < 1 ? 'none' : '0 5px 14px rgba(116,82,168,0.12)'
+        }}>
+          Quitar 1 huellita
+        </button>
+      </div>
+      {stampFeedback && (
+        <div style={{ textAlign: 'center', color: colors.mintDark, fontSize: 12, fontWeight: 900, margin: '9px 0 4px' }}>
+          {languageText(`${selectedGoal.label} sigue avanzando.`, `${translateToEnglish(selectedGoal.label)} keeps moving forward.`)}
+        </div>
+      )}
 
       <div style={{
         ...styles.card,
@@ -728,7 +975,9 @@ function HomeScreen({ data, weekStamps, addStamp, setScreen }) {
         <div>
           <div style={{ fontSize: 11, fontWeight: 700, color: colors.textMuted }}>Premio de la semana</div>
           <div style={{ fontSize: 16, fontWeight: 900, color: colors.text }}>{data.weeklyReward}</div>
-          <div style={{ fontSize: 12, color: colors.textMuted }}>{weekStamps.length} de 10 huellitas</div>
+          <div style={{ fontSize: 12, color: colors.textMuted }}>
+            {languageText(`${weekStamps.length} de 10 huellitas`, `${weekStamps.length} of 10 paw prints`)}
+          </div>
         </div>
         <div style={{ marginLeft: 'auto', width: 88 }}>
           <ProgressBar pct={progress} color={colors.lavender} height={8} />
@@ -751,37 +1000,20 @@ function HomeScreen({ data, weekStamps, addStamp, setScreen }) {
   );
 }
 
-function RegisterScreen({ data, weekStamps, addSupport, registerIntent, setScreen }) {
-  const [goal, setGoal] = useState(null);
-  const [result, setResult] = useState('support');
+function RegisterScreen({ registerIntent, setScreen }) {
   const [selectedSupport, setSelectedSupport] = useState(supportOptions[0]);
   const [supportStep, setSupportStep] = useState(supportActionOptions.help[0]);
-  const [supportSaved, setSupportSaved] = useState(false);
   const decisionRef = useRef(null);
   const adultSupportRef = useRef(null);
   const supportSteps = supportActionOptions[selectedSupport.id] || [];
 
   useEffect(() => {
     if (!['support', 'adultSupportCard'].includes(registerIntent)) return;
-    setResult('support');
     window.setTimeout(() => {
       const target = registerIntent === 'adultSupportCard' ? adultSupportRef.current : decisionRef.current;
       target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 80);
   }, [registerIntent]);
-
-  function saveSupport() {
-    if (supportSaved) return;
-    addSupport({
-      type: selectedSupport.label,
-      goalId: goal?.id || '',
-      goalLabel: goal?.label || '',
-      supportStep: supportStep?.label || 'Acompañar con calma',
-      supportAudience: 'Apoyo para el niño',
-      repairAction: selectedSupport.id === 'repair' ? supportStep?.label || '' : ''
-    });
-    setSupportSaved(true);
-  }
 
   return (
     <div style={{
@@ -828,12 +1060,12 @@ function RegisterScreen({ data, weekStamps, addSupport, registerIntent, setScree
         <span style={{ fontSize: 22, lineHeight: 1.1 }}>💡</span>
         <div>
           <div style={{ fontSize: 12, color: colors.text, fontWeight: 850, lineHeight: 1.45 }}>
-            Descubre y registra qué funciona mejor para la situación.
+            Elige una ayuda para acompañar este momento.
           </div>
         </div>
       </div>
 
-      {result === 'support' && (
+      {
         <>
           <div ref={decisionRef} style={{ marginBottom: 8, scrollMarginTop: 14 }}>
             <div style={sectionLabel}>¿Qué necesita ahora?</div>
@@ -849,15 +1081,14 @@ function RegisterScreen({ data, weekStamps, addSupport, registerIntent, setScree
                 onClick={() => {
                   setSelectedSupport(option);
                   setSupportStep((supportActionOptions[option.id] || [])[0]);
-                  setSupportSaved(false);
                 }}
               />
             ))}
           </div>
         </>
-      )}
+      }
 
-      {result === 'support' && (
+      {
         <div ref={adultSupportRef} style={{
           background: `linear-gradient(135deg, ${colors.peachLight}, rgba(255,255,255,0.94))`,
           border: `2px solid ${colors.peach}45`,
@@ -885,9 +1116,9 @@ function RegisterScreen({ data, weekStamps, addSupport, registerIntent, setScree
             boxShadow: '0 5px 14px rgba(45,55,72,0.08)'
           }}>Abrir Apoyo al Adulto</button>
         </div>
-      )}
+      }
 
-      {result === 'support' && supportSteps.length > 0 && (
+      {supportSteps.length > 0 && (
         <div style={{
           background: selectedSupport.id === 'repair'
             ? `linear-gradient(135deg, ${colors.mintLight}, rgba(255,255,255,0.92))`
@@ -903,13 +1134,12 @@ function RegisterScreen({ data, weekStamps, addSupport, registerIntent, setScree
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 15, fontWeight: 900, color: colors.text, marginBottom: 4 }}>
             <span>{selectedSupport.emoji}</span>
             <span>
-              {selectedSupport.id === 'repair' ? 'Podemos reconectar' : '¿Qué sigue ahora?'}
+              {selectedSupport.id === 'repair' ? 'Podemos reconectar' : '¿Cómo puedes ayudar?'}
             </span>
           </div>
           {supportSteps.map((action) => (
             <button key={action.id} type="button" onClick={() => {
               setSupportStep(action);
-              setSupportSaved(false);
             }} style={{
               width: '100%',
               minHeight: 42,
@@ -934,115 +1164,6 @@ function RegisterScreen({ data, weekStamps, addSupport, registerIntent, setScree
               </span>
             </button>
           ))}
-        </div>
-      )}
-
-      {result === 'support' && (
-        <div style={{
-          background: 'rgba(255,255,255,0.76)',
-          border: '1px solid rgba(139,182,241,0.24)',
-          borderRadius: 20,
-          padding: '12px 14px',
-          marginTop: 4,
-          boxShadow: '0 8px 20px rgba(45,55,72,0.06)'
-        }}>
-          <div style={{ fontSize: 13, fontWeight: 950, color: colors.text, marginBottom: 10 }}>¿Ocurrió durante alguna meta? <span style={{ color: colors.textMuted }}>(opcional)</span></div>
-          <div style={{ display: 'grid', gap: 7 }}>
-            <button type="button" onClick={() => {
-              setGoal(null);
-              setSupportSaved(false);
-            }} style={{
-              width: '100%',
-              minHeight: 40,
-              border: `2px solid ${!goal ? colors.mintDark : '#EEF0F4'}`,
-              borderRadius: 14,
-              background: !goal ? colors.mintLight : '#fff',
-              color: colors.text,
-              textAlign: 'left',
-              padding: '8px 11px',
-              fontWeight: 900
-            }}>
-              💛 Sin meta específica
-            </button>
-            {data.activeGoals.map((item) => {
-              const active = goal?.id === item.id;
-              return (
-                <button key={item.id} type="button" onClick={() => {
-                  setGoal(active ? null : item);
-                  setSupportSaved(false);
-                }} style={{
-                  width: '100%',
-                  minHeight: 40,
-                  border: `2px solid ${active ? colors.mintDark : '#EEF0F4'}`,
-                  borderRadius: 14,
-                  background: active ? colors.mintLight : '#fff',
-                  color: colors.text,
-                  textAlign: 'left',
-                  padding: '8px 11px',
-                  fontWeight: 900,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 8
-                }}>
-                  <span>{item.emoji}</span>
-                  <span style={{ flex: 1 }}>{item.label}</span>
-                  {active && <span style={{ color: colors.mintDark, fontSize: 11 }}>Relacionada</span>}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {result === 'support' && <button className="blue-glass-action" onClick={saveSupport} disabled={supportSaved} type="button" style={{
-        width: '100%',
-        background: BLUE_GLASS_BACKGROUND,
-        color: '#fff',
-        border: '1px solid rgba(190,235,255,0.94)',
-        borderRadius: 20,
-        padding: 16,
-        fontWeight: 900,
-        fontSize: 16,
-        cursor: supportSaved ? 'default' : 'pointer',
-        marginTop: 12,
-        boxShadow: BLUE_GLASS_SHADOW,
-        opacity: supportSaved ? 0.9 : 1
-      }}>
-        {supportSaved
-          ? 'Momento registrado ✓'
-          : 'Registrar el momento'}
-      </button>}
-
-      {result === 'support' && supportSaved && (
-        <div style={{
-          marginTop: 12,
-          background: `linear-gradient(135deg, ${colors.mintLight}, rgba(255,255,255,0.92))`,
-          border: `2px solid ${colors.mintDark}44`,
-          borderRadius: 20,
-          padding: '14px 16px',
-          boxShadow: `0 10px 24px ${colors.mintDark}22`
-        }}>
-          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-            <span style={{ fontSize: 24 }}>✅</span>
-            <div>
-              <div style={{ fontSize: 14, color: colors.text, fontWeight: 950 }}>Ya quedó guardado</div>
-              <div style={{ fontSize: 12, color: colors.textMuted, fontWeight: 800, marginTop: 2 }}>
-                Lo puedes ver en Resumen, dentro de Apoyo familiar.
-              </div>
-            </div>
-          </div>
-          <button type="button" onClick={() => setScreen('summary')} style={{
-            width: '100%',
-            minHeight: 42,
-            marginTop: 12,
-            border: 'none',
-            borderRadius: 15,
-            background: '#fff',
-            color: colors.mintDark,
-            fontFamily: 'inherit',
-            fontWeight: 950,
-            boxShadow: '0 4px 14px rgba(45,55,72,0.08)'
-          }}>Ver apoyo familiar</button>
         </div>
       )}
 
@@ -1335,15 +1456,17 @@ function RewardsScreen({ data, updateReward, deleteCustomReward }) {
   );
 }
 
-function SummaryScreen({ data, weekStamps, weekSupport, addNote }) {
+function SummaryScreen({ data, weekStamps, addNote }) {
   const [observation, setObservation] = useState('');
   const topGoal = getTopGoal(weekStamps, data.activeGoals);
   const notes = currentWeekItems(data.notes || []);
-  const latestSupportStep = weekSupport.find((log) => log.supportStep || log.repairAction);
   const rewardEarned = weekStamps.length >= WEEKLY_TARGET;
   const biggestWin = weekStamps.length
-    ? `${weekStamps.length} huellitas hacia ${data.weeklyReward}`
-    : 'El plan familiar está listo para la primera huellita.';
+    ? languageText(
+      `${weekStamps.length} huellitas hacia ${data.weeklyReward}`,
+      `${weekStamps.length} paw prints toward ${translateToEnglish(data.weeklyReward)}`
+    )
+    : languageText('El plan familiar está listo para la primera huellita.', 'The family plan is ready for the first paw print.');
 
   return (
     <div style={{
@@ -1372,7 +1495,9 @@ function SummaryScreen({ data, weekStamps, weekSupport, addNote }) {
             <div>
               <div style={{ fontSize: 13, fontWeight: 900, color: colors.textMuted }}>Celebración de la semana</div>
               <div style={{ fontSize: 21, fontWeight: 900, color: rewardEarned ? '#C8811A' : colors.mintDark }}>
-                {rewardEarned ? 'Premio ganado' : `${weekStamps.length} huellitas ganadas`}
+                {rewardEarned
+                  ? languageText('Premio ganado', 'Reward earned')
+                  : languageText(`${weekStamps.length} huellitas ganadas`, `${weekStamps.length} paw prints earned`)}
               </div>
             </div>
           </div>
@@ -1395,10 +1520,15 @@ function SummaryScreen({ data, weekStamps, weekSupport, addNote }) {
           </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-          <VictoryTile emoji="🎁" label="Premio" value={rewardEarned ? 'Ganado' : `Faltan ${Math.max(0, WEEKLY_TARGET - weekStamps.length)} huellitas`} />
+          <VictoryTile emoji="🎁" label="Premio" value={rewardEarned
+            ? languageText('Ganado', 'Earned')
+            : languageText(
+              `Faltan ${Math.max(0, WEEKLY_TARGET - weekStamps.length)} huellitas`,
+              `${Math.max(0, WEEKLY_TARGET - weekStamps.length)} paw prints to go`
+            )} />
           <VictoryTile emoji="🌟" label="Mayor logro" value={biggestWin} />
-          <VictoryTile emoji="🎯" label="Meta favorita" value={topGoal} />
-          <VictoryTile emoji="❤️" label="Logro familiar" value={latestSupportStep ? 'Se eligió un siguiente paso' : 'Las huellitas se quedaron seguras'} />
+          <VictoryTile emoji="🎯" label="Deber favorito" value={topGoal} />
+          <VictoryTile emoji="❤️" label="Logro familiar" value="Seguimos avanzando juntos" />
         </div>
       </div>
 
@@ -1408,52 +1538,8 @@ function SummaryScreen({ data, weekStamps, weekSupport, addNote }) {
         border: `2px solid ${colors.sunYellow}55`
       }}>
         <div style={{ fontSize: 16, fontWeight: 950, color: colors.text, marginBottom: 12 }}>Logros de la semana</div>
-        <SummaryMiniRow emoji="🐾" title="Huellitas ganadas" value={`${weekStamps.length} esta semana`} />
-        <SummaryMiniRow emoji="🎯" title="Meta más reforzada" value={topGoal} />
-      </div>
-
-      <div style={{
-        ...styles.card,
-        background: 'rgba(255,255,255,0.92)',
-        border: '2px solid rgba(139,182,241,0.28)'
-      }}>
-        <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 10 }}>
-          <span style={{ fontSize: 28 }}>☁️</span>
-          <div>
-            <div style={{ fontSize: 16, fontWeight: 950, color: colors.text }}>Apoyo familiar</div>
-            <div style={{ fontSize: 12, color: colors.textMuted, fontWeight: 800, lineHeight: 1.4, marginTop: 4 }}>
-              Momentos registrados cuando la familia necesitó ayuda, calma o un paso para reparar.
-            </div>
-          </div>
-        </div>
-
-        <div style={{
-          background: colors.skyLight,
-          borderRadius: 16,
-          padding: '10px 12px',
-          fontSize: 12,
-          color: colors.text,
-          fontWeight: 900,
-          marginBottom: 10
-        }}>
-          {weekSupport.length ? `${weekSupport.length} momentos registrados esta semana` : 'Sin momentos registrados esta semana'}
-        </div>
-
-        {weekSupport.length ? weekSupport.slice(0, 5).map((log) => (
-          <SupportLogDetail key={log.id} log={log} />
-        )) : (
-          <div style={{
-            background: 'rgba(255,255,255,0.72)',
-            borderRadius: 16,
-            padding: '12px 14px',
-            fontSize: 12,
-            color: colors.textMuted,
-            fontWeight: 800,
-            lineHeight: 1.4
-          }}>
-            Cuando elijas “Ayuda extra”, aparecerá aquí el momento y el siguiente paso elegido.
-          </div>
-        )}
+        <SummaryMiniRow emoji="🐾" title="Huellitas ganadas" value={languageText(`${weekStamps.length} esta semana`, `${weekStamps.length} this week`)} />
+        <SummaryMiniRow emoji="🎯" title="Deber más reforzado" value={topGoal} />
       </div>
 
       <div style={{
@@ -1537,19 +1623,27 @@ function SummaryScreen({ data, weekStamps, weekSupport, addNote }) {
       <div style={{ ...styles.card, background: colors.sunLight, border: `2px dashed ${colors.sunYellow}` }}>
         <div style={{ fontSize: 14, fontWeight: 900, color: colors.text, marginBottom: 8 }}>💡 Recomendación</div>
         <div style={{ fontSize: 13, color: colors.text, lineHeight: 1.5, fontWeight: 700 }}>
-          Esta semana funcionó bien reforzar “{topGoal}”. La próxima semana puedes mantener solo 2 metas si quieres hacerlo más fácil.
+          {languageText(
+            `Esta semana funcionó bien reforzar “${topGoal}”. La próxima semana puedes mantener solo 2 deberes si quieres hacerlo más fácil.`,
+            `Celebrating “${translateToEnglish(topGoal)}” worked well this week. Next week, you can keep only 2 duties to make things easier.`
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, updateGoalLimit, updateProfile, undoRecentStamps, setScreen }) {
+function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, updateGoalLimit, updateReward, deleteCustomReward, updateProfile, language, updateLanguage, setScreen }) {
   const [name, setName] = useState(data.childName);
   const [age, setAge] = useState(data.childAge);
   const [avatar, setAvatar] = useState(data.avatar);
   const [customGoal, setCustomGoal] = useState('');
+  const [customReward, setCustomReward] = useState('');
   const allGoals = [...goalOptions, ...(data.customGoals || [])];
+  const allRewards = [
+    ...rewardOptions.map((reward) => ({ ...reward, custom: false })),
+    ...(data.customRewards || []).map((reward) => ({ ...reward, custom: true }))
+  ];
 
   function saveProfile() {
     updateProfile({ childName: name.trim() || data.childName, childAge: age.trim(), avatar });
@@ -1558,6 +1652,21 @@ function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, up
   function saveCustomGoal() {
     addCustomGoal(customGoal);
     setCustomGoal('');
+  }
+
+  function saveCustomReward() {
+    const reward = customReward.trim();
+    if (!reward) return;
+    updateReward(reward, { id: crypto.randomUUID(), emoji: '✨', label: reward, desc: 'Premio personalizado' });
+    setCustomReward('');
+  }
+
+  function removeCustomReward(reward) {
+    const confirmed = window.confirm(getLanguage() === 'en'
+      ? `Remove the custom reward “${reward.label}”?`
+      : `¿Quitar el premio personalizado “${reward.label}”?`);
+    if (!confirmed) return;
+    deleteCustomReward(reward.id);
   }
 
   return (
@@ -1573,7 +1682,10 @@ function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, up
         borderRadius: '0 0 32px 32px',
         marginBottom: 20
       }}>
-        <div style={{ fontSize: 22, fontWeight: 900, color: colors.text }}>Ajustes</div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+          <div style={{ fontSize: 22, fontWeight: 900, color: colors.text }}>Ajustes</div>
+          <LanguagePills language={language} updateLanguage={updateLanguage} />
+        </div>
         <div style={{ fontSize: 13, color: colors.textMuted, marginTop: 4 }}>Plan familiar de esta semana</div>
       </div>
 
@@ -1588,7 +1700,9 @@ function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, up
           <Avatar emoji={avatar} small />
           <div>
             <div style={{ fontWeight: 900, fontSize: 16, color: colors.text }}>{name.trim() || data.childName}</div>
-            <div style={{ fontSize: 12, color: colors.textMuted }}>{age.trim() || data.childAge} años</div>
+            <div style={{ fontSize: 12, color: colors.textMuted }}>
+              {languageText(`${age.trim() || data.childAge} años`, `${age.trim() || data.childAge} years old`)}
+            </div>
           </div>
         </div>
         <TextInput label="Nombre" value={name} onChange={setName} />
@@ -1631,34 +1745,102 @@ function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, up
         }}>Guardar perfil</button>
       </div>
 
+      <div style={sectionLabel}>Premio de la semana</div>
       <div style={{
         ...styles.card,
-        background: colors.sunLight,
-        border: `2px dashed ${colors.sunYellow}`
+        padding: '16px 18px',
+        border: `2px solid ${colors.lavender}55`,
+        background: `linear-gradient(135deg, ${colors.lavLight}, rgba(255,255,255,0.94))`
       }}>
-        <div style={{ fontSize: 16, fontWeight: 900, color: colors.text }}>Corregir un error</div>
-        <div style={{ fontSize: 12, color: '#A8810A', marginTop: 5, lineHeight: 1.45, fontWeight: 700 }}>
-          Usa esto solo si una huellita fue agregada por accidente. Los momentos difíciles van en momentos familiares, no quitando progreso.
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+          <div style={{ width: 48, height: 48, borderRadius: 16, background: '#fff', display: 'grid', placeItems: 'center', fontSize: 25, boxShadow: '0 4px 12px rgba(45,55,72,0.08)' }}>🎁</div>
+          <div>
+            <div style={{ fontSize: 11, fontWeight: 900, color: colors.textMuted }}>Premio seleccionado</div>
+            <div style={{ fontSize: 15, fontWeight: 950, color: colors.text, marginTop: 2 }}>{data.weeklyReward}</div>
+          </div>
         </div>
-        <div style={{ marginTop: 12 }}>
-          <button type="button" onClick={undoRecentStamps} disabled={data.stamps.length < 1} style={{
-            width: '100%',
-            minHeight: 50,
+        <label style={{ display: 'block', fontSize: 12, fontWeight: 900, color: colors.textMuted, marginBottom: 6 }} htmlFor="weekly-reward-select">
+          Cambiar premio
+        </label>
+        <select id="weekly-reward-select" value={data.weeklyReward} onChange={(event) => updateReward(event.target.value)} style={{
+          width: '100%',
+          minHeight: 46,
+          border: '2px solid #DDE5F0',
+          borderRadius: 15,
+          background: '#fff',
+          color: colors.text,
+          padding: '0 11px',
+          fontFamily: 'inherit',
+          fontWeight: 850,
+          outline: 'none'
+        }}>
+          {allRewards.map((reward) => <option key={reward.id} value={reward.label}>{reward.emoji} {reward.label}</option>)}
+        </select>
+        <div style={{ fontSize: 12, fontWeight: 950, color: colors.text, marginTop: 16 }}>Premio personalizado</div>
+        <div style={{ display: 'flex', gap: 8, marginTop: 7 }}>
+          <input
+            value={customReward}
+            onChange={(event) => setCustomReward(event.target.value)}
+            placeholder="Ej. Hacer hot cakes"
+            style={{
+              minWidth: 0,
+              flex: 1,
+              border: '2px solid #DDE5F0',
+              borderRadius: 14,
+              minHeight: 44,
+              padding: '0 11px',
+              fontFamily: 'inherit',
+              outline: 'none'
+            }}
+          />
+          <button type="button" className={customReward.trim() ? 'blue-glass-action' : ''} onClick={saveCustomReward} disabled={!customReward.trim()} style={{
+            minWidth: 86,
             border: 'none',
-            borderRadius: 16,
-            background: data.stamps.length < 1 ? '#E8ECF0' : colors.peach,
-            color: data.stamps.length < 1 ? colors.textSoft : colors.text,
-            fontWeight: 900
-          }}>
-            Quitar 1 huellita
-          </button>
+            borderRadius: 14,
+            background: customReward.trim() ? BLUE_GLASS_BACKGROUND : '#E8ECF0',
+            color: customReward.trim() ? '#fff' : colors.textSoft,
+            fontWeight: 950,
+            boxShadow: customReward.trim() ? BLUE_GLASS_SHADOW : 'none'
+          }}>Guardar</button>
         </div>
-        <div style={{ fontSize: 11, color: '#A8810A', fontWeight: 800, marginTop: 8 }}>
-          Quita primero las huellitas más recientes.
-        </div>
+        {(data.customRewards || []).length > 0 && (
+          <div style={{ marginTop: 16, borderTop: '1.5px solid rgba(185,155,234,0.3)', paddingTop: 12 }}>
+            <div style={{ fontSize: 11, fontWeight: 950, color: colors.textMuted, marginBottom: 7 }}>
+              Premios personalizados guardados
+            </div>
+            {(data.customRewards || []).map((reward) => (
+              <div key={reward.id} style={{
+                minHeight: 44,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 9,
+                padding: '7px 8px 7px 11px',
+                borderTop: '1px solid rgba(221,229,240,0.82)'
+              }}>
+                <span style={{ fontSize: 18 }}>{reward.emoji || '✨'}</span>
+                <span style={{ flex: 1, minWidth: 0, fontSize: 12, fontWeight: 900, color: colors.text }}>{reward.label}</span>
+                {data.weeklyReward === reward.label && (
+                  <span style={{ fontSize: 10, fontWeight: 950, color: '#176DCA' }}>Seleccionado</span>
+                )}
+                <button type="button" onClick={() => removeCustomReward(reward)} aria-label={`Quitar ${reward.label}`} style={{
+                  minHeight: 32,
+                  border: '1.5px solid #D7DEEA',
+                  borderRadius: 11,
+                  background: '#fff',
+                  color: colors.textMuted,
+                  padding: '5px 9px',
+                  fontSize: 11,
+                  fontWeight: 950
+                }}>Quitar</button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
-      <div style={sectionLabel}>Metas activas · máximo {data.goalLimit}</div>
+      <div style={sectionLabel}>
+        {languageText(`Deberes activos · máximo ${data.goalLimit}`, `Active duties · maximum ${data.goalLimit}`)}
+      </div>
       <div style={{ fontSize: 12, color: colors.textMuted, fontWeight: 700, lineHeight: 1.45, margin: '-4px 0 12px' }}>
         Recomendamos empezar con 3. La familia puede crecer a 5 o 7 cuando la rutina ya se sienta fácil.
       </div>
@@ -1668,9 +1850,9 @@ function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, up
         padding: '14px 16px',
         border: '2px solid #EEF0F4'
       }}>
-        <div style={{ fontSize: 14, fontWeight: 900, color: colors.text, marginBottom: 4 }}>Límite de metas semanales</div>
+        <div style={{ fontSize: 14, fontWeight: 900, color: colors.text, marginBottom: 4 }}>Límite de deberes semanales</div>
         <div style={{ fontSize: 12, color: colors.textMuted, fontWeight: 700, lineHeight: 1.4, marginBottom: 12 }}>
-          Elige cuántas metas pueden estar activas esta semana. Manténlo simple cuando la semana esté pesada.
+          Elige cuántos deberes pueden estar activos esta semana. Manténlo simple cuando la semana esté pesada.
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
           {GOAL_LIMIT_OPTIONS.map((limit) => (
@@ -1683,7 +1865,7 @@ function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, up
               fontWeight: 900,
               boxShadow: data.goalLimit === limit ? BLUE_GLASS_SHADOW : 'none'
             }}>
-              {limit} metas
+              {languageText(`${limit} deberes`, `${limit} duties`)}
             </button>
           ))}
         </div>
@@ -1694,9 +1876,9 @@ function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, up
         padding: '16px 18px',
         border: '2px dashed rgba(78,143,84,0.34)'
       }}>
-        <div style={{ fontSize: 15, fontWeight: 900, color: colors.text }}>Meta personalizada</div>
+        <div style={{ fontSize: 15, fontWeight: 900, color: colors.text }}>Deber personalizado</div>
         <div style={{ fontSize: 12, color: colors.textMuted, fontWeight: 700, lineHeight: 1.4, marginTop: 4 }}>
-          Agrega una meta concreta para esta familia. Si hay espacio, se activa automáticamente.
+          Agrega un deber concreto para esta familia. Si hay espacio, se activa automáticamente.
         </div>
         <input
           value={customGoal}
@@ -1723,7 +1905,7 @@ function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, up
           color: customGoal.trim() ? '#fff' : colors.textSoft,
           fontWeight: 900,
           boxShadow: customGoal.trim() ? BLUE_GLASS_SHADOW : 'none'
-        }}>Guardar meta</button>
+        }}>Guardar deber</button>
       </div>
 
       {allGoals.map((goal) => {
@@ -1784,10 +1966,51 @@ function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, up
   );
 }
 
+function LanguagePills({ language, updateLanguage }) {
+  return (
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: 4,
+      padding: 4,
+      borderRadius: 999,
+      background: 'rgba(255,255,255,0.72)',
+      border: '1px solid rgba(139,182,241,0.42)',
+      boxShadow: '0 8px 24px rgba(7,24,59,0.14)',
+      backdropFilter: 'blur(14px)',
+      flexShrink: 0
+    }}>
+      {[
+        { id: 'en', label: 'English' },
+        { id: 'es', label: 'Español' }
+      ].map((option) => {
+        const active = language === option.id;
+        return (
+          <button key={option.id} type="button" onClick={() => updateLanguage(option.id)} style={{
+            minHeight: 34,
+            padding: '0 13px',
+            border: active ? '1px solid rgba(190,235,255,0.94)' : '1px solid transparent',
+            borderRadius: 999,
+            background: active ? BLUE_GLASS_BACKGROUND : 'transparent',
+            color: active ? '#fff' : colors.text,
+            fontFamily: 'inherit',
+            fontSize: 11,
+            fontWeight: 950,
+            boxShadow: active ? '0 5px 12px rgba(20,104,225,0.26), inset 0 1px 0 rgba(255,255,255,0.56)' : 'none',
+            cursor: 'pointer'
+          }}>
+            {option.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 function NavBar({ active, onChange }) {
   const tabs = [
     { id: 'home', icon: 'home', label: 'Inicio' },
-    { id: 'register', icon: 'plus', label: 'Registro' },
+    { id: 'register', icon: 'heart', label: 'Ayuda' },
     { id: 'rewards', icon: 'gift', label: 'Premios' },
     { id: 'summary', icon: 'chart', label: 'Semana' },
     { id: 'settings', icon: 'user', label: 'Ajustes' }
@@ -1803,7 +2026,7 @@ function NavBar({ active, onChange }) {
           gap: 4,
           cursor: 'pointer',
           padding: '4px 8px',
-          opacity: active === tab.id ? 1 : 0.45,
+          opacity: 1,
           transition: 'all 0.2s',
           background: 'transparent',
           border: 'none'
@@ -1812,14 +2035,16 @@ function NavBar({ active, onChange }) {
             width: 40,
             height: 40,
             borderRadius: 14,
-            background: active === tab.id ? 'linear-gradient(145deg, rgba(139,211,255,0.9), rgba(26,119,224,0.94))' : 'transparent',
+            background: active === tab.id ? 'linear-gradient(145deg, rgba(139,211,255,0.96), rgba(26,119,224,1))' : 'rgba(255,255,255,0.84)',
+            border: active === tab.id ? '1.5px solid #0B4FA4' : '1.5px solid #AEBACB',
+            boxShadow: active === tab.id ? '0 5px 12px rgba(23,109,202,0.28)' : '0 2px 5px rgba(18,33,64,0.08)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
           }}>
-            <Icon name={tab.icon} size={20} color={active === tab.id ? '#fff' : colors.textSoft} />
+            <Icon name={tab.icon} size={20} color={active === tab.id ? '#fff' : '#31435F'} />
           </div>
-          <span style={{ fontSize: 10, fontWeight: 800, color: active === tab.id ? '#176DCA' : colors.textSoft }}>
+          <span style={{ fontSize: 10, fontWeight: 900, color: active === tab.id ? '#125BAF' : '#506078' }}>
             {tab.label}
           </span>
         </button>
@@ -1851,7 +2076,7 @@ function StatusBar({ onLogoClick }) {
           objectPosition: 'center',
           mixBlendMode: 'darken',
           clipPath: 'polygon(7% 19%, 31% 19%, 35% 13%, 66% 13%, 70% 6%, 83% 6%, 87% 14%, 94% 14%, 97% 25%, 97% 71%, 93% 78%, 90% 89%, 15% 89%, 12% 80%, 8% 76%)',
-          filter: 'url(#omekid-blue-logo-filter)'
+          filter: 'none'
         }} />
       </button>
       <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
@@ -1946,7 +2171,7 @@ function RegisterCompanionArt({ weeklyReward }) {
           Cada huellita cuenta
         </div>
         <div style={{ fontSize: 11, fontWeight: 800, color: colors.textMuted, lineHeight: 1.35, marginTop: 7 }}>
-          Elige una meta, celebra el avance o acompaña con apoyo.
+          Elige un deber, celebra el avance o acompaña con apoyo.
         </div>
         <div style={{
           marginTop: 10,
@@ -2152,7 +2377,10 @@ function GoalCard({ goal, count, dark = false, selected = false, onClick }) {
           fontWeight: 900
         }}>
           <span>🐾</span>
-          <span>{count} {count === 1 ? 'huellita' : 'huellitas'} esta semana</span>
+          <span>{languageText(
+            `${count} ${count === 1 ? 'huellita' : 'huellitas'} esta semana`,
+            `${count} ${count === 1 ? 'paw print' : 'paw prints'} this week`
+          )}</span>
         </div>
       </div>
       <div style={{
@@ -2381,30 +2609,6 @@ function SummaryMiniRow({ emoji, title, value }) {
   );
 }
 
-function SupportLogDetail({ log }) {
-  return (
-    <div style={{
-      background: 'linear-gradient(135deg, rgba(231,240,255,0.82), rgba(255,255,255,0.9))',
-      borderRadius: 16,
-      padding: '12px 14px',
-      marginTop: 9,
-      border: '1px solid rgba(139,182,241,0.32)'
-    }}>
-      <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 6 }}>
-        <span style={{ fontSize: 18 }}>{getSupportEmoji(log.type)}</span>
-        <span style={{ fontSize: 12, color: colors.textMuted, fontWeight: 900 }}>{formatShortDate(log.createdAt)}</span>
-      </div>
-      <div style={{ fontSize: 13, color: colors.text, fontWeight: 950, lineHeight: 1.35 }}>
-        {log.goalLabel ? `${log.goalLabel} · ` : ''}{log.type}
-      </div>
-      <div style={{ fontSize: 12, color: colors.textMuted, fontWeight: 800, lineHeight: 1.35, marginTop: 4 }}>
-        {log.supportAudience ? `${log.supportAudience}: ` : 'Siguiente paso: '}
-        {log.supportStep || log.repairAction || 'Acompañar con calma'}
-      </div>
-    </div>
-  );
-}
-
 function VictoryTile({ emoji, label, value }) {
   return (
     <div style={{
@@ -2468,6 +2672,7 @@ function Icon({ name, size = 22, color = colors.text }) {
     home: <path d="M3 9.5L12 3l9 6.5V21H15v-6H9v6H3V9.5z" strokeWidth="2" stroke={color} fill="none" strokeLinecap="round" strokeLinejoin="round" />,
     star: <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z" strokeWidth="1.8" stroke={color} fill={color} opacity="0.8" />,
     gift: <><rect x="3" y="11" width="18" height="11" rx="2" strokeWidth="2" stroke={color} fill="none" /><path d="M12 11V22M3 7h18v4H3zM12 7C10 5 8 3 8 3s0 4 4 4zM12 7c2-2 4-4 4-4s0 4-4 4z" strokeWidth="2" stroke={color} fill="none" /></>,
+    heart: <path d="M20.8 4.7a5.4 5.4 0 0 0-7.7 0L12 5.8l-1.1-1.1a5.4 5.4 0 1 0-7.7 7.6L12 21l8.8-8.7a5.4 5.4 0 0 0 0-7.6z" strokeWidth="2" stroke={color} fill={color} fillOpacity="0.18" strokeLinecap="round" strokeLinejoin="round" />,
     chart: <path d="M3 20h18M3 20V10l5 5 4-8 5 6 3-4v11" strokeWidth="2" stroke={color} fill="none" strokeLinecap="round" strokeLinejoin="round" />,
     user: <><circle cx="12" cy="8" r="4" strokeWidth="2" stroke={color} fill="none" /><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" strokeWidth="2" stroke={color} fill="none" strokeLinecap="round" /></>,
     check: <path d="M5 12l5 5L20 7" strokeWidth="2.5" stroke={color} fill="none" strokeLinecap="round" strokeLinejoin="round" />,
@@ -2495,7 +2700,7 @@ function goalStampCount(goal, stamps) {
 }
 
 function getTopGoal(stamps, goals) {
-  if (!stamps.length) return goals[0]?.label || 'una meta simple';
+  if (!stamps.length) return goals[0]?.label || 'un deber sencillo';
   const counts = stamps.reduce((acc, stamp) => {
     const goalLabel = getGoalById(stamp.goalId)?.label || stamp.goalLabel;
     acc[goalLabel] = (acc[goalLabel] || 0) + 1;
@@ -2529,15 +2734,15 @@ function getWeekRangeLabel() {
   const start = startOfWeek(new Date());
   const end = new Date(start);
   end.setDate(start.getDate() + 6);
-  return `${start.getDate()} – ${end.getDate()} de ${new Intl.DateTimeFormat('es', { month: 'long' }).format(end)}`;
+  const language = getLanguage();
+  const month = new Intl.DateTimeFormat(language === 'en' ? 'en-US' : 'es', { month: 'long' }).format(end);
+  return language === 'en'
+    ? `${month} ${start.getDate()} – ${end.getDate()}`
+    : `${start.getDate()} – ${end.getDate()} de ${month}`;
 }
 
 function formatShortDate(value) {
-  return new Intl.DateTimeFormat('es', { weekday: 'short', day: 'numeric', month: 'short' }).format(new Date(value));
-}
-
-function getSupportEmoji(type) {
-  return supportOptions.find((option) => option.label === type)?.emoji || '☁️';
+  return new Intl.DateTimeFormat(getLanguage() === 'en' ? 'en-US' : 'es', { weekday: 'short', day: 'numeric', month: 'short' }).format(new Date(value));
 }
 
 function startOfWeek(date) {
@@ -2583,7 +2788,8 @@ function normalizeRewardLabel(label) {
     'Go to the park': 'Ir al parque',
     'Extra video game time': 'Tiempo extra de videojuego',
     'Choose Friday dinner': 'Elegir comida del viernes',
-    'Campout night': 'Noche de campamento'
+    'Campout night': 'Una ida al parque de diversiones',
+    'Noche de campamento': 'Una ida al parque de diversiones'
   };
   return englishToSpanish[label] || label || rewardOptions[0].label;
 }
@@ -2592,7 +2798,9 @@ function useStoredData() {
   const [data, setDataState] = useState(() => {
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      return normalizeData(saved ? { ...defaultData, ...saved } : defaultData);
+      const cleanData = normalizeData(saved ? { ...defaultData, ...saved } : defaultData);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cleanData));
+      return cleanData;
     } catch {
       return defaultData;
     }
@@ -2625,7 +2833,7 @@ function normalizeData(value) {
   const activeGoals = shouldUseDefaultTestGoals(value?.activeGoals)
     ? defaultActiveGoals
     : savedGoals.slice(0, goalLimit);
-  return {
+  const normalizedData = {
     ...defaultData,
     ...value,
     avatar: getAvatar(value?.avatar).id,
@@ -2639,9 +2847,10 @@ function normalizeData(value) {
       ? value.customRewards.map((reward) => ({ ...reward, desc: reward.desc === 'Custom reward' ? 'Premio personalizado' : reward.desc }))
       : [],
     stamps: Array.isArray(value?.stamps) ? value.stamps : [],
-    supportLogs: Array.isArray(value?.supportLogs) ? value.supportLogs : [],
     notes: Array.isArray(value?.notes) ? value.notes : []
   };
+  delete normalizedData.supportLogs;
+  return normalizedData;
 }
 
 function getDefaultActiveGoals(goalLimit = DEFAULT_GOAL_LIMIT) {
