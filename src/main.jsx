@@ -896,7 +896,7 @@ function Onboarding({ language, updateLanguage, onComplete, onClose, canClose })
 
 function LandingScreen({ onStart, language, updateLanguage }) {
   return (
-    <main style={{
+    <main className="omekid-landing" style={{
       minHeight: '100vh',
       background: `
         linear-gradient(90deg, rgba(249,242,232,0.97) 0%, rgba(249,242,232,0.9) 29%, rgba(249,242,232,0.28) 53%, rgba(7,24,59,0.08) 100%),
@@ -910,7 +910,7 @@ function LandingScreen({ onStart, language, updateLanguage }) {
       color: colors.text,
       position: 'relative'
     }}>
-      <div style={{
+      <div className="landing-language" style={{
         position: 'absolute',
         top: 'clamp(16px, 3vh, 28px)',
         right: 'clamp(12px, 3vw, 34px)',
@@ -923,6 +923,7 @@ function LandingScreen({ onStart, language, updateLanguage }) {
         textAlign: 'left'
       }}>
         <img
+          className="landing-logo"
           src="/omekid-logo-emblem.png"
           alt="OmeKid · Cada elección cuenta"
           style={{

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'omekid-v4';
+const CACHE_NAME = 'omekid-v5';
 const APP_SHELL = [
   '/',
   '/index.html',
