@@ -822,6 +822,15 @@ button {
   box-shadow: 0 0 0 8px rgba(185, 155, 234, 0.1), 0 12px 28px rgba(139, 182, 241, 0.22);
 }
 
+.is-standalone .omekid-status-bar {
+  height: calc(44px + env(safe-area-inset-top)) !important;
+  padding-top: env(safe-area-inset-top) !important;
+}
+
+.is-standalone .omekid-fake-system-status {
+  display: none !important;
+}
+
 @media (max-width: 430px), (max-height: 760px) {
   html,
   body,

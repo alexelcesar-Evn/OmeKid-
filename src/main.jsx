@@ -2,6 +2,9 @@ import React, { Component, useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
+const isStandaloneApp = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+document.documentElement.classList.toggle('is-standalone', isStandaloneApp);
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').catch(() => {
@@ -2341,7 +2344,7 @@ function NavBar({ active, onChange }) {
 
 function StatusBar({ onLogoClick }) {
   return (
-    <div style={styles.statusBar}>
+    <div className="omekid-status-bar" style={styles.statusBar}>
       <button type="button" onClick={onLogoClick} aria-label="Ir a la portada de OmeKid" style={{
         height: 34,
         border: 'none',
@@ -2365,7 +2368,7 @@ function StatusBar({ onLogoClick }) {
           filter: 'none'
         }} />
       </button>
-      <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+      <div className="omekid-fake-system-status" style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
         <span style={{ fontSize: 11, color: colors.textMuted }}>●●●</span>
         <span style={{ fontSize: 11, color: colors.textMuted }}>WiFi</span>
         <span style={{ fontSize: 11, color: colors.textMuted }}>🔋</span>
