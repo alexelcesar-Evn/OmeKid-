@@ -723,7 +723,9 @@ function App() {
         language={language}
         updateLanguage={updateLanguage}
         onComplete={(profile) => {
-          if (!profiles.length && profile?.childName) addProfile(profile);
+          if (!profiles.length) {
+            addProfile(profile || { childName: '', childAge: '', avatar: 'omi' });
+          }
           localStorage.setItem(ONBOARDING_KEY, 'complete');
           setShowOnboarding(false);
           setScreen('home');
@@ -786,7 +788,6 @@ function Onboarding({ language, updateLanguage, onComplete, onClose, canClose })
   const [profileAge, setProfileAge] = useState('');
   const [profileAvatar, setProfileAvatar] = useState('omi');
   const [isFinishing, setIsFinishing] = useState(false);
-  const needsProfile = !canClose;
   const pages = [
     {
       eyebrow: languageText('Bienvenido a OmeKid', 'Welcome to OmeKid'),
@@ -856,6 +857,9 @@ function Onboarding({ language, updateLanguage, onComplete, onClose, canClose })
                 </button>
               ))}
             </div>
+            <div className="onboarding-profile-optional">
+              {languageText('Puedes completar el perfil después en Ajustes.', 'You can finish the profile later in Settings.')}
+            </div>
           </div>
         )}
         <div className="onboarding-dots" aria-label={`${step + 1} / ${pages.length}`}>
@@ -876,7 +880,7 @@ function Onboarding({ language, updateLanguage, onComplete, onClose, canClose })
               : null;
             onComplete(profile);
           }}
-          disabled={isFinishing || (needsProfile && (step === 1 || step === pages.length - 1) && !profileName.trim())}
+          disabled={isFinishing}
         >
           {step === pages.length - 1
             ? languageText('Comenzar', "Let's Begin")
@@ -1015,7 +1019,9 @@ function HomeScreen({ data, weekStamps, addStamp, undoRecentStamps, setScreen, o
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
           <div>
             <div style={{ fontSize: 25, fontWeight: 950, color: '#fff', lineHeight: 1.2 }}>
-              {languageText(`¡Hola, ${data.childName}! 👋`, `Hi, ${data.childName}! 👋`)}
+              {data.childName
+                ? languageText(`¡Hola, ${data.childName}! 👋`, `Hi, ${data.childName}! 👋`)
+                : languageText('¡Hola! 👋', 'Hi! 👋')}
             </div>
             <div style={{ fontSize: 13, fontWeight: 800, color: 'rgba(255,255,255,0.72)', marginTop: 4 }}>¿Cómo estuvo tu día?</div>
           </div>
@@ -1027,7 +1033,7 @@ function HomeScreen({ data, weekStamps, addStamp, undoRecentStamps, setScreen, o
             {profiles.map((profile) => (
               <button key={profile.id} type="button" className={profile.id === data.id ? 'is-active' : ''} onClick={() => switchProfile(profile.id)}>
                 <img src={getAvatar(profile.avatar).image} alt="" />
-                <span>{profile.childName}</span>
+                <span>{profile.childName || languageText('Mi peque', 'My child')}</span>
               </button>
             ))}
           </div>
@@ -1863,9 +1869,10 @@ function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, up
   }
 
   function removeProfile(profile) {
+    const profileName = profile.childName || languageText('este perfil', 'this profile');
     const confirmed = window.confirm(language === 'en'
-      ? `Remove ${profile.childName}'s profile from this device?`
-      : `¿Quitar el perfil de ${profile.childName} de este dispositivo?`);
+      ? `Remove ${profileName} from this device?`
+      : `¿Quitar ${profileName} de este dispositivo?`);
     if (confirmed) deleteProfile(profile.id);
   }
 
@@ -1920,12 +1927,12 @@ function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, up
               <button type="button" onClick={() => switchProfile(profile.id)}>
                 <img src={getAvatar(profile.avatar).image} alt="" />
                 <span>
-                  <strong>{profile.childName}</strong>
+                  <strong>{profile.childName || languageText('Perfil sin nombre', 'Unnamed profile')}</strong>
                   <small>{profile.id === data.id ? languageText('Perfil activo', 'Active profile') : languageText('Cambiar a este niño', 'Switch to this child')}</small>
                 </span>
               </button>
               {profiles.length > 1 && (
-                <button type="button" className="family-profile-remove" onClick={() => removeProfile(profile)} aria-label={languageText(`Quitar perfil de ${profile.childName}`, `Remove ${profile.childName}'s profile`)}>
+                <button type="button" className="family-profile-remove" onClick={() => removeProfile(profile)} aria-label={languageText(`Quitar ${profile.childName || 'perfil sin nombre'}`, `Remove ${profile.childName || 'unnamed profile'}`)}>
                   ×
                 </button>
               )}
@@ -1974,9 +1981,13 @@ function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, up
         <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
           <Avatar emoji={avatar} small />
           <div>
-            <div style={{ fontWeight: 900, fontSize: 16, color: colors.text }}>{name.trim() || data.childName}</div>
+            <div style={{ fontWeight: 900, fontSize: 16, color: colors.text }}>
+              {name.trim() || data.childName || languageText('Perfil sin nombre', 'Unnamed profile')}
+            </div>
             <div style={{ fontSize: 12, color: colors.textMuted }}>
-              {languageText(`${age.trim() || data.childAge} años`, `${age.trim() || data.childAge} years old`)}
+              {age.trim() || data.childAge
+                ? languageText(`${age.trim() || data.childAge} años`, `${age.trim() || data.childAge} years old`)
+                : languageText('Edad pendiente', 'Age not set')}
             </div>
           </div>
         </div>
