@@ -32,7 +32,7 @@ const colors = {
   textSoft: '#A9B3C3'
 };
 
-const STORAGE_KEY = 'omekid-vandam-en-v1';
+const FAMILY_STORAGE_KEY = 'omekid-family-v1';
 const LANGUAGE_KEY = 'omekid-language';
 const ONBOARDING_KEY = 'omekid-onboarding-beta-v1';
 const WEEKLY_TARGET = 10;
@@ -176,6 +176,13 @@ const englishCopy = {
   'Todavía no hay observaciones esta semana.': 'No notes yet this week.',
   '💡 Recomendación': '💡 Recommendation',
   'Plan familiar de esta semana': "This week's family plan",
+  'Perfiles de la familia': 'Family profiles',
+  'Cada niño conserva sus propios deberes, huellitas y premio.': 'Each child keeps their own tasks, paw prints, and reward.',
+  'Agregar otro niño': 'Add another child',
+  'Nombre del niño': "Child's name",
+  'Agregar perfil': 'Add profile',
+  'Cambiar niño': 'Switch child',
+  'Administrar perfiles': 'Manage profiles',
   'Idioma': 'Language',
   'Elige el idioma de OmeKid.': 'Choose the OmeKid language.',
   'Editar perfil del niño': "Edit child's profile",
@@ -436,8 +443,8 @@ const avatarOptions = [
 ];
 
 const defaultData = {
-  childName: 'Mateo',
-  childAge: '7',
+  childName: '',
+  childAge: '',
   avatar: 'omi',
   goalLimit: DEFAULT_GOAL_LIMIT,
   activeGoals: goalOptions.slice(0, DEFAULT_GOAL_LIMIT),
@@ -519,7 +526,7 @@ const styles = {
 };
 
 function App() {
-  const [data, setData] = useStoredData();
+  const { data, setData, profiles, addProfile, switchProfile, deleteProfile } = useFamilyData();
   const [language, setLanguage] = useState(getLanguage);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [screen, setScreenState] = useState(() => getScreenFromHash() || 'landing');
@@ -537,6 +544,12 @@ function App() {
     observer.observe(document.body, { childList: true, subtree: true, characterData: true });
     return () => observer.disconnect();
   }, [language, screen, celebration]);
+
+  useEffect(() => {
+    if (!profiles.length && screen !== 'landing') {
+      setShowOnboarding(true);
+    }
+  }, [profiles.length, screen]);
 
   useEffect(() => {
     const initialScreen = getScreenFromHash();
@@ -692,6 +705,10 @@ function App() {
     updateReward,
     deleteCustomReward,
     updateProfile,
+    profiles,
+    addProfile,
+    switchProfile,
+    deleteProfile,
     language,
     updateLanguage,
     undoRecentStamps,
@@ -705,19 +722,21 @@ function App() {
       <Onboarding
         language={language}
         updateLanguage={updateLanguage}
-        onComplete={() => {
+        onComplete={(profile) => {
+          if (!profiles.length && profile?.childName) addProfile(profile);
           localStorage.setItem(ONBOARDING_KEY, 'complete');
           setShowOnboarding(false);
           setScreen('home');
         }}
         onClose={() => setShowOnboarding(false)}
+        canClose={profiles.length > 0}
       />
     );
   }
 
   if (screen === 'landing') {
     return <LandingScreen onStart={() => {
-      if (localStorage.getItem(ONBOARDING_KEY)) setScreen('home');
+      if (profiles.length && localStorage.getItem(ONBOARDING_KEY)) setScreen('home');
       else setShowOnboarding(true);
     }} language={language} updateLanguage={updateLanguage} />;
   }
@@ -732,7 +751,7 @@ function App() {
   }[screen];
 
   return (
-    <div style={{
+    <div className="omekid-app-shell" style={{
       minHeight: '100vh',
       background: `
         radial-gradient(circle at 18% 16%, rgba(255,246,222,0.9) 0 18%, transparent 36%),
@@ -746,47 +765,57 @@ function App() {
       padding: 20,
       fontFamily: "'Nunito', 'Quicksand', -apple-system, sans-serif"
     }}>
-      <div style={styles.phoneFrame}>
+      <div className="omekid-phone-frame" style={styles.phoneFrame}>
         <StatusBar onLogoClick={() => setScreen('landing')} />
-        <div key={screen} style={styles.scrollContent}>
+        <div key={screen} className="omekid-scroll-content" style={styles.scrollContent}>
           <Screen {...screenProps} />
         </div>
         <NavBar active={screen === 'adultSupport' ? 'settings' : screen} onChange={setScreen} />
         {celebration && <Celebration message={celebration} />}
       </div>
-      <div style={{ marginTop: 22, fontSize: 12, color: 'rgba(7,24,59,0.52)', textAlign: 'center', fontWeight: 800 }}>
+      <div className="omekid-desktop-caption" style={{ marginTop: 22, fontSize: 12, color: 'rgba(7,24,59,0.52)', textAlign: 'center', fontWeight: 800 }}>
         OmeKid · Hábitos positivos para niños y familias
       </div>
     </div>
   );
 }
 
-function Onboarding({ language, updateLanguage, onComplete, onClose }) {
+function Onboarding({ language, updateLanguage, onComplete, onClose, canClose }) {
   const [step, setStep] = useState(0);
+  const [profileName, setProfileName] = useState('');
+  const [profileAge, setProfileAge] = useState('');
+  const [profileAvatar, setProfileAvatar] = useState('omi');
+  const [isFinishing, setIsFinishing] = useState(false);
+  const needsProfile = !canClose;
   const pages = [
     {
       eyebrow: languageText('Bienvenido a OmeKid', 'Welcome to OmeKid'),
-      title: languageText('Las pequeñas elecciones se convierten en hábitos fuertes.', 'Small choices become strong habits.'),
+      title: languageText('Las pequeñas decisiones crean grandes hábitos.', 'Small choices become strong habits.'),
       emoji: '🌟'
     },
     {
       eyebrow: languageText('Paso 1', 'Step 1'),
+      title: languageText('Crea el primer perfil de tu hijo o hija.', 'Create your first family profile.'),
+      emoji: '👦'
+    },
+    {
+      eyebrow: languageText('Paso 2', 'Step 2'),
       title: languageText('Elige un premio semanal.', 'Choose a weekly reward.'),
       emoji: '🎁'
     },
     {
-      eyebrow: languageText('Paso 2', 'Step 2'),
+      eyebrow: languageText('Paso 3', 'Step 3'),
       title: languageText('Elige hasta 3 deberes para enfocarse.', 'Choose up to 3 tasks to focus on.'),
       emoji: '🎯'
     },
     {
-      eyebrow: languageText('Paso 3', 'Step 3'),
-      title: languageText('Gana huellitas durante la semana.', 'Earn paw prints throughout the week.'),
+      eyebrow: languageText('Paso 4', 'Step 4'),
+      title: languageText('Gana huellitas durante la semana para acercarte a tu premio.', 'Earn paw prints throughout the week.'),
       emoji: '🐾'
     },
     {
       eyebrow: languageText('Celebren juntos', 'Celebrate together'),
-      title: languageText('Alcanza la meta y celebren juntos.', 'Reach the goal and celebrate together.'),
+      title: languageText('Alcanza la meta y celebren en familia.', 'Reach the goal and celebrate together.'),
       emoji: '🏆'
     }
   ];
@@ -794,9 +823,11 @@ function Onboarding({ language, updateLanguage, onComplete, onClose }) {
 
   return (
     <main className="onboarding-shell">
-      <button type="button" className="onboarding-close" onClick={onClose}>
-        {languageText('Cerrar', 'Close')}
-      </button>
+      {canClose && (
+        <button type="button" className="onboarding-close" onClick={onClose}>
+          {languageText('Cerrar', 'Close')}
+        </button>
+      )}
       <div className="onboarding-language">
         <LanguagePills language={language} updateLanguage={updateLanguage} />
       </div>
@@ -805,6 +836,28 @@ function Onboarding({ language, updateLanguage, onComplete, onClose }) {
         <div className="onboarding-icon" aria-hidden="true">{page.emoji}</div>
         <div className="onboarding-eyebrow">{page.eyebrow}</div>
         <h1>{page.title}</h1>
+        {step === 1 && (
+          <div className="onboarding-profile-form">
+            <input
+              value={profileName}
+              onChange={(event) => setProfileName(event.target.value)}
+              placeholder={languageText('Nombre del niño', "Child's name")}
+            />
+            <input
+              value={profileAge}
+              onChange={(event) => setProfileAge(event.target.value)}
+              inputMode="numeric"
+              placeholder={languageText('Edad', 'Age')}
+            />
+            <div className="onboarding-avatar-row">
+              {avatarOptions.slice(0, 4).map((option) => (
+                <button key={option.id} type="button" className={profileAvatar === option.id ? 'is-active' : ''} onClick={() => setProfileAvatar(option.id)}>
+                  <Avatar emoji={option.id} small />
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
         <div className="onboarding-dots" aria-label={`${step + 1} / ${pages.length}`}>
           {pages.map((_, index) => <span key={index} className={index === step ? 'is-active' : ''} />)}
         </div>
@@ -812,9 +865,18 @@ function Onboarding({ language, updateLanguage, onComplete, onClose }) {
           type="button"
           className="blue-glass-action onboarding-next"
           onClick={() => {
-            if (step === pages.length - 1) onComplete();
-            else setStep(step + 1);
+            if (step !== pages.length - 1) {
+              setStep(step + 1);
+              return;
+            }
+            if (isFinishing) return;
+            setIsFinishing(true);
+            const profile = profileName.trim()
+              ? { childName: profileName.trim(), childAge: profileAge.trim(), avatar: profileAvatar }
+              : null;
+            onComplete(profile);
           }}
+          disabled={isFinishing || (needsProfile && (step === 1 || step === pages.length - 1) && !profileName.trim())}
         >
           {step === pages.length - 1
             ? languageText('Comenzar', "Let's Begin")
@@ -910,7 +972,7 @@ function LandingScreen({ onStart, language, updateLanguage }) {
   );
 }
 
-function HomeScreen({ data, weekStamps, addStamp, undoRecentStamps, setScreen, openGuide }) {
+function HomeScreen({ data, weekStamps, addStamp, undoRecentStamps, setScreen, openGuide, profiles, switchProfile }) {
   const progress = Math.min(100, (weekStamps.length / WEEKLY_TARGET) * 100);
   const [stampFeedback, setStampFeedback] = useState(false);
   const [feedbackGoal, setFeedbackGoal] = useState(null);
@@ -952,13 +1014,24 @@ function HomeScreen({ data, weekStamps, addStamp, undoRecentStamps, setScreen, o
       }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
           <div>
-            <div style={{ fontSize: 13, fontWeight: 800, color: 'rgba(255,255,255,0.72)' }}>¿Cómo estuvo tu día?</div>
             <div style={{ fontSize: 25, fontWeight: 950, color: '#fff', lineHeight: 1.2 }}>
               {languageText(`¡Hola, ${data.childName}! 👋`, `Hi, ${data.childName}! 👋`)}
             </div>
+            <div style={{ fontSize: 13, fontWeight: 800, color: 'rgba(255,255,255,0.72)', marginTop: 4 }}>¿Cómo estuvo tu día?</div>
           </div>
           <Avatar emoji={data.avatar} />
         </div>
+
+        {profiles.length > 1 && (
+          <div className="profile-switcher">
+            {profiles.map((profile) => (
+              <button key={profile.id} type="button" className={profile.id === data.id ? 'is-active' : ''} onClick={() => switchProfile(profile.id)}>
+                <img src={getAvatar(profile.avatar).image} alt="" />
+                <span>{profile.childName}</span>
+              </button>
+            ))}
+          </div>
+        )}
 
         <div style={{
           borderRadius: 24,
@@ -1755,10 +1828,11 @@ function SummaryScreen({ data, weekStamps, addNote }) {
   );
 }
 
-function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, updateGoalLimit, updateReward, deleteCustomReward, updateProfile, language, updateLanguage, setScreen }) {
+function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, updateGoalLimit, updateReward, deleteCustomReward, updateProfile, profiles, addProfile, switchProfile, deleteProfile, language, updateLanguage, setScreen }) {
   const [name, setName] = useState(data.childName);
   const [age, setAge] = useState(data.childAge);
   const [avatar, setAvatar] = useState(data.avatar);
+  const [newProfileName, setNewProfileName] = useState('');
   const [customGoal, setCustomGoal] = useState('');
   const [customReward, setCustomReward] = useState('');
   const allGoals = [...goalOptions, ...(data.customGoals || [])];
@@ -1767,8 +1841,32 @@ function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, up
     ...(data.customRewards || []).map((reward) => ({ ...reward, custom: true }))
   ];
 
+  useEffect(() => {
+    setName(data.childName);
+    setAge(data.childAge);
+    setAvatar(data.avatar);
+  }, [data.id]);
+
   function saveProfile() {
     updateProfile({ childName: name.trim() || data.childName, childAge: age.trim(), avatar });
+  }
+
+  function saveNewProfile() {
+    const childName = newProfileName.trim();
+    if (!childName) return;
+    addProfile({
+      childName,
+      childAge: '',
+      avatar: avatarOptions[profiles.length % avatarOptions.length].id
+    });
+    setNewProfileName('');
+  }
+
+  function removeProfile(profile) {
+    const confirmed = window.confirm(language === 'en'
+      ? `Remove ${profile.childName}'s profile from this device?`
+      : `¿Quitar el perfil de ${profile.childName} de este dispositivo?`);
+    if (confirmed) deleteProfile(profile.id);
   }
 
   function saveCustomGoal() {
@@ -1809,6 +1907,61 @@ function SettingsScreen({ data, updateGoals, addCustomGoal, deleteCustomGoal, up
           <LanguagePills language={language} updateLanguage={updateLanguage} />
         </div>
         <div style={{ fontSize: 13, color: colors.textMuted, marginTop: 4 }}>Plan familiar de esta semana</div>
+      </div>
+
+      <div style={styles.card}>
+        <div style={{ fontSize: 16, fontWeight: 900, color: colors.text }}>Perfiles de la familia</div>
+        <div style={{ fontSize: 12, color: colors.textMuted, marginTop: 4, lineHeight: 1.45 }}>
+          Cada niño conserva sus propios deberes, huellitas y premio.
+        </div>
+        <div className="family-profile-list">
+          {profiles.map((profile) => (
+            <div key={profile.id} className={`family-profile-row ${profile.id === data.id ? 'is-active' : ''}`}>
+              <button type="button" onClick={() => switchProfile(profile.id)}>
+                <img src={getAvatar(profile.avatar).image} alt="" />
+                <span>
+                  <strong>{profile.childName}</strong>
+                  <small>{profile.id === data.id ? languageText('Perfil activo', 'Active profile') : languageText('Cambiar a este niño', 'Switch to this child')}</small>
+                </span>
+              </button>
+              {profiles.length > 1 && (
+                <button type="button" className="family-profile-remove" onClick={() => removeProfile(profile)} aria-label={languageText(`Quitar perfil de ${profile.childName}`, `Remove ${profile.childName}'s profile`)}>
+                  ×
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+        <div style={{ fontSize: 12, fontWeight: 950, color: colors.text, marginTop: 15 }}>Agregar otro niño</div>
+        <div style={{ display: 'flex', gap: 8, marginTop: 7 }}>
+          <input
+            value={newProfileName}
+            onChange={(event) => setNewProfileName(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') saveNewProfile();
+            }}
+            placeholder={languageText('Nombre del niño', "Child's name")}
+            style={{
+              minWidth: 0,
+              flex: 1,
+              border: '2px solid #DDE5F0',
+              borderRadius: 14,
+              minHeight: 44,
+              padding: '0 11px',
+              fontFamily: 'inherit',
+              outline: 'none'
+            }}
+          />
+          <button type="button" className={newProfileName.trim() ? 'blue-glass-action' : ''} onClick={saveNewProfile} disabled={!newProfileName.trim()} style={{
+            minWidth: 94,
+            border: 'none',
+            borderRadius: 14,
+            background: newProfileName.trim() ? BLUE_GLASS_BACKGROUND : '#E8ECF0',
+            color: newProfileName.trim() ? '#fff' : colors.textSoft,
+            fontWeight: 950,
+            boxShadow: newProfileName.trim() ? BLUE_GLASS_SHADOW : 'none'
+          }}>Agregar perfil</button>
+        </div>
       </div>
 
       <div style={styles.card}>
@@ -2139,7 +2292,7 @@ function NavBar({ active, onChange }) {
   ];
 
   return (
-    <div style={styles.navBar}>
+    <div className="omekid-nav-bar" style={styles.navBar}>
       {tabs.map((tab) => (
         <button key={tab.id} onClick={() => onChange(tab.id)} type="button" style={{
           display: 'flex',
@@ -2959,40 +3112,96 @@ function normalizeRewardLabel(label) {
   return englishToSpanish[label] || label || rewardOptions[0].label;
 }
 
-function useStoredData() {
-  const [data, setDataState] = useState(() => {
+function useFamilyData() {
+  const [family, setFamily] = useState(() => {
     try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      const cleanData = normalizeData(saved ? { ...defaultData, ...saved } : defaultData);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(cleanData));
-      return cleanData;
+      const saved = JSON.parse(localStorage.getItem(FAMILY_STORAGE_KEY));
+      const profiles = Array.isArray(saved?.profiles)
+        ? saved.profiles.map((profile) => normalizeData(profile))
+        : [];
+      const activeProfileId = profiles.some((profile) => profile.id === saved?.activeProfileId)
+        ? saved.activeProfileId
+        : profiles[0]?.id || null;
+      return { profiles, activeProfileId };
     } catch {
-      return defaultData;
+      return { profiles: [], activeProfileId: null };
     }
   });
 
-  function setData(nextData) {
-    if (typeof nextData === 'function') {
-      setDataState((currentData) => {
-        const cleanData = normalizeData(nextData(currentData));
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(cleanData));
-        return cleanData;
-      });
-      return;
-    }
+  const data = family.profiles.find((profile) => profile.id === family.activeProfileId)
+    || family.profiles[0]
+    || normalizeData({ ...defaultData, id: 'preview-profile' });
 
-    const cleanData = normalizeData(nextData);
-    setDataState(cleanData);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(cleanData));
+  function saveFamily(nextFamily) {
+    localStorage.setItem(FAMILY_STORAGE_KEY, JSON.stringify(nextFamily));
+    return nextFamily;
   }
 
-  return [data, setData];
+  function setData(nextData) {
+    setFamily((currentFamily) => {
+      const currentProfile = currentFamily.profiles.find((profile) => profile.id === currentFamily.activeProfileId)
+        || currentFamily.profiles[0];
+      if (!currentProfile) return currentFamily;
+      const resolvedData = typeof nextData === 'function' ? nextData(currentProfile) : nextData;
+      const cleanData = normalizeData({ ...resolvedData, id: currentProfile.id });
+      return saveFamily({
+        ...currentFamily,
+        activeProfileId: currentProfile.id,
+        profiles: currentFamily.profiles.map((profile) => profile.id === currentProfile.id ? cleanData : profile)
+      });
+    });
+  }
+
+  function addProfile(profile) {
+    const cleanProfile = normalizeData({
+      ...defaultData,
+      ...profile,
+      id: crypto.randomUUID(),
+      customGoals: [],
+      customRewards: [],
+      stamps: [],
+      notes: []
+    });
+    setFamily((currentFamily) => saveFamily({
+      profiles: [...currentFamily.profiles, cleanProfile],
+      activeProfileId: cleanProfile.id
+    }));
+  }
+
+  function switchProfile(profileId) {
+    setFamily((currentFamily) => {
+      if (!currentFamily.profiles.some((profile) => profile.id === profileId)) return currentFamily;
+      return saveFamily({ ...currentFamily, activeProfileId: profileId });
+    });
+  }
+
+  function deleteProfile(profileId) {
+    setFamily((currentFamily) => {
+      const profiles = currentFamily.profiles.filter((profile) => profile.id !== profileId);
+      return saveFamily({
+        profiles,
+        activeProfileId: currentFamily.activeProfileId === profileId
+          ? profiles[0]?.id || null
+          : currentFamily.activeProfileId
+      });
+    });
+  }
+
+  return {
+    data,
+    setData,
+    profiles: family.profiles,
+    activeProfileId: family.activeProfileId,
+    addProfile,
+    switchProfile,
+    deleteProfile
+  };
 }
 
 function normalizeData(value) {
   const goalLimit = getGoalLimit(value?.goalLimit);
   const defaultActiveGoals = getDefaultActiveGoals(goalLimit);
-  const savedGoals = Array.isArray(value?.activeGoals) && value.activeGoals.length
+  const savedGoals = Array.isArray(value?.activeGoals)
     ? value.activeGoals.map(normalizeGoal)
     : defaultActiveGoals;
   const activeGoals = shouldUseDefaultTestGoals(value?.activeGoals)
@@ -3024,10 +3233,11 @@ function getDefaultActiveGoals(goalLimit = DEFAULT_GOAL_LIMIT) {
 }
 
 function shouldUseDefaultTestGoals(activeGoals) {
-  if (!Array.isArray(activeGoals) || !activeGoals.length) return true;
-  const activeIds = activeGoals.map((goal) => goal?.id).filter(Boolean);
-  const legacyDefaultIds = ['calm-voice', 'pick-up-toys', 'homework', 'bath-no-fight'];
-  return activeIds.length <= 3 && activeIds.every((id) => legacyDefaultIds.includes(id));
+  if (!Array.isArray(activeGoals)) return false;
+  const activeIds = activeGoals.map((goal) => goal?.id).filter(Boolean).sort();
+  const legacyDefaultIds = ['calm-voice', 'homework', 'pick-up-toys'].sort();
+  return activeIds.length === legacyDefaultIds.length
+    && activeIds.every((id, index) => id === legacyDefaultIds[index]);
 }
 
 function getGoalLimit(value) {
